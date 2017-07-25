@@ -1,0 +1,38 @@
+Check Permission Evaluator at http://static.springsource.org/spring-security/site/docs/3.0.x/reference/el-access.html
+
+Step 1: Tell spring that you are going to use permission evaluator.
+
+<beans:bean id="expressionHandler" class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+    <beans:property name="permissionEvaluator">
+        <beans:bean id="permissionEvaluator" class="com.npacemo.permissions.SomePermissionsEvaluator"/>
+    </beans:property>
+</beans:bean>
+Step2: Implement PermissionEvaluator at com.npacemo.permissions.SomePermissionsEvaluator
+
+class SomePermissionsEvaluator implements PermissionEvaluator {
+
+boolean hasPermission(Authentication authentication,
+                      java.lang.Object targetDomainObject,
+                      java.lang.Object permission){
+
+if(permission.equals("check role")){
+//ok I need to check for roles from DB..
+if matching then return true else false..
+
+    //write logic as per ur requirement
+
+    }
+
+boolean hasPermission(Authentication authentication,
+                      java.io.Serializable targetId,
+                      java.lang.String targetType,
+                      java.lang.Object permission){
+
+//write logic as per ur requirement
+}
+
+}
+Step 3: call hasPermission inside PreAuthorize to check for ur roles
+
+@PreAuthorize("hasPermission(#contact, 'check role')")
+  public void deleteApplication(Contact contact);
